@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Product Information Requirements",
+  "type": "object",
+  "required": ["digitalProductPassport", "substancesOfConcern"],
+  "properties": {
+    "digitalProductPassport": {
+      "type": "object",
+      "required": ["productId"],
+      "properties": {
+        "productId": {
+          "type": "string"
+        },
+        "performance": {
+          "type": "object",
+          "properties": {
+            "repairabilityScore": { "type": "number" },
+            "durabilityScore": { "type": "number" },
+            "carbonFootprint": { "type": "number" },
+            "environmentalFootprint": { "type": "number" }
+          },
+          "additionalProperties": false
+        },
+        "instructions": {
+          "type": "object",
+          "properties": {
+            "installation": { "type": "string" },
+            "use": { "type": "string" },
+            "maintenance": { "type": "string" },
+            "repair": { "type": "string" },
+            "endOfLife": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "treatmentInfo": {
+          "type": "string"
+        },
+        "additionalInfo": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "substancesOfConcern": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/substance" }
+    },
+
+    "informationAvailability": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "digitalProductPassport",
+          "product",
+          "packaging",
+          "label",
+          "documentation",
+          "website"
+        ]
+      }
+    },
+
+    "language": {
+      "type": "string"
+    }
+  },
+
+  "$defs": {
+    "substance": {
+      "type": "object",
+      "required": ["name", "location", "concentration"],
+      "properties": {
+        "name": {
+          "type": "object",
+          "required": ["primary"],
+          "properties": {
+            "primary": {
+              "type": "string",
+              "description": "IUPAC or international name"
+            },
+            "otherNames": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "ecNumber": { "type": "string" },
+            "casNumber": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "location": {
+          "type": "string"
+        },
+        "concentration": {
+          "type": "string"
+        },
+        "safeUseInstructions": {
+          "type": "string"
+        },
+        "endOfLifeHandling": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+
+  "additionalProperties": false
+}
