@@ -1,50 +1,196 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Product Information Requirements",
+  "$id": "https://passportkit.io/schema/dpp/v1.2",
+  "title": "PassportKit Digital Product Passport",
+  "version": "0.0.2",
   "type": "object",
-  "required": ["digitalProductPassport", "substancesOfConcern"],
+
+  "required": [
+    "passportId",
+    "issuedAt",
+    "product",
+    "manufacturer",
+    "substancesOfConcern",
+    "informationAvailability"
+  ],
+
   "properties": {
-    "digitalProductPassport": {
+
+    "passportId": {
+      "type": "string",
+      "format": "uri"
+    },
+
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+
+    "status": {
+      "type": "string",
+      "enum": ["draft", "published", "archived"]
+    },
+
+    "manufacturer": {
       "type": "object",
-      "required": ["productId"],
+      "required": ["name", "countryCode"],
       "properties": {
-        "productId": {
-          "type": "string"
-        },
-        "performance": {
-          "type": "object",
-          "properties": {
-            "repairabilityScore": { "type": "number" },
-            "durabilityScore": { "type": "number" },
-            "carbonFootprint": { "type": "number" },
-            "environmentalFootprint": { "type": "number" }
-          },
-          "additionalProperties": false
-        },
-        "instructions": {
-          "type": "object",
-          "properties": {
-            "installation": { "type": "string" },
-            "use": { "type": "string" },
-            "maintenance": { "type": "string" },
-            "repair": { "type": "string" },
-            "endOfLife": { "type": "string" }
-          },
-          "additionalProperties": false
-        },
-        "treatmentInfo": {
-          "type": "string"
-        },
-        "additionalInfo": {
-          "type": "string"
-        }
+        "name": { "type": "string" },
+        "euEconomicOperatorId": { "type": "string" },
+        "countryCode": { "type": "string" },
+        "address": { "type": "string" },
+        "contact": { "type": "string" }
       },
       "additionalProperties": false
+    },
+
+    "supplyChain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["role", "name", "countryCode"],
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": ["manufacturer", "importer", "supplier", "assembler"]
+          },
+          "name": { "type": "string" },
+          "countryCode": { "type": "string" }
+        }
+      }
+    },
+
+    "product": {
+      "type": "object",
+      "required": ["name", "modelNumber", "category"],
+      "properties": {
+        "name": { "type": "string" },
+        "modelNumber": { "type": "string" },
+        "serialNumber": { "type": "string" },
+        "gtin": { "type": "string" },
+        "category": {
+          "type": "string",
+          "enum": ["battery", "textile", "electronics", "furniture", "other"]
+        }
+      }
+    },
+
+    "identifiers": {
+      "type": "object",
+      "properties": {
+        "sku": { "type": "string" },
+        "lot": { "type": "string" },
+        "productionDate": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+
+    "performance": {
+      "type": "object",
+      "properties": {
+        "repairabilityScore": { "type": "number" },
+        "durabilityScore": { "type": "number" },
+        "carbonFootprintKgCO2e": { "type": "number" },
+        "environmentalFootprintScore": { "type": "number" }
+      }
+    },
+
+    "performanceClass": {
+      "type": "object",
+      "properties": {
+        "repairability": { "type": "string" },
+        "durability": { "type": "string" }
+      }
+    },
+
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "massPercent": { "type": "number" },
+          "recycledContentPercent": { "type": "number" }
+        }
+      }
+    },
+
+    "instructions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "installation": { "type": "string" },
+          "use": { "type": "string" },
+          "maintenance": { "type": "string" },
+          "repair": { "type": "string" },
+          "endOfLife": { "type": "string" },
+          "thirdPartyOS": { "type": "string" }
+        }
+      }
+    },
+
+    "treatmentInfo": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "disassembly": { "type": "string" },
+          "reuse": { "type": "string" },
+          "recycling": { "type": "string" },
+          "disposal": { "type": "string" }
+        }
+      }
+    },
+
+    "additionalSustainabilityInfo": {
+      "type": "object",
+      "description": "Art 7.2(b)(iv)",
+      "additionalProperties": true
+    },
+
+    "circularity": {
+      "type": "object",
+      "properties": {
+        "sparePartsAvailableYears": { "type": "number" },
+        "repairNetworkUrl": { "type": "string", "format": "uri" }
+      }
     },
 
     "substancesOfConcern": {
       "type": "array",
       "items": { "$ref": "#/$defs/substance" }
+    },
+
+    "lifecycleTracking": {
+      "type": "object",
+      "properties": {
+        "componentLevel": { "type": "boolean" },
+        "traceabilityMethod": { "type": "string" }
+      }
+    },
+
+    "dataCarrier": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["qr", "nfc", "barcode", "rfid"]
+        },
+        "location": { "type": "string" }
+      }
     },
 
     "informationAvailability": {
@@ -62,49 +208,36 @@
       }
     },
 
-    "language": {
-      "type": "string"
+    "marketLanguages": {
+      "type": "array",
+      "items": { "type": "string" }
     }
+
   },
 
   "$defs": {
     "substance": {
       "type": "object",
-      "required": ["name", "location", "concentration"],
+      "required": [
+        "name",
+        "location",
+        "concentrationPercent",
+        "safeUseInstructions",
+        "endOfLifeHandling"
+      ],
       "properties": {
         "name": {
           "type": "object",
-          "required": ["primary"],
           "properties": {
-            "primary": {
-              "type": "string",
-              "description": "IUPAC or international name"
-            },
-            "otherNames": {
-              "type": "array",
-              "items": { "type": "string" }
-            },
-            "ecNumber": { "type": "string" },
+            "iupac": { "type": "string" },
             "casNumber": { "type": "string" }
-          },
-          "additionalProperties": false
+          }
         },
-        "location": {
-          "type": "string"
-        },
-        "concentration": {
-          "type": "string"
-        },
-        "safeUseInstructions": {
-          "type": "string"
-        },
-        "endOfLifeHandling": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
+        "location": { "type": "string" },
+        "concentrationPercent": { "type": "number" },
+        "safeUseInstructions": { "type": "string" },
+        "endOfLifeHandling": { "type": "string" }
+      }
     }
-  },
-
-  "additionalProperties": false
+  }
 }
