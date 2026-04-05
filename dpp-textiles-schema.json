@@ -1,0 +1,108 @@
+{
+  "dpp_version": "minimal_simplified_v1",
+  "applicability": {
+    "region": "EU",
+    "deployment_year": 2027
+  },
+  "sections": {
+    "product_composition": {
+      "recycled_material_content": {
+        "type": "number",
+        "unit": "percentage",
+        "required": true
+      },
+      "dangerous_substances": {
+        "type": "array",
+        "items": {
+          "name": "string",
+          "concentration": "number",
+          "unit": "percentage"
+        },
+        "required": true
+      },
+      "plastic_microfibers": {
+        "type": "boolean",
+        "required": true
+      }
+    },
+    "recyclability": {
+      "is_recyclable": {
+        "type": "boolean",
+        "required": true
+      },
+      "recyclability_details": {
+        "type": "string",
+        "required": false
+      }
+    },
+    "supply_chain_traceability": {
+      "processes": {
+        "type": "object",
+        "properties": {
+          "confection_location": "string",
+          "weaving_location": "string",
+          "knitting_location": "string",
+          "dyeing_location": "string",
+          "printing_location": "string",
+          "wet_processes_location": "string",
+          "stitching_location": "string",
+          "assembling_location": "string",
+          "finishing_location": "string"
+        },
+        "required": true
+      }
+    },
+    "packaging": {
+      "recycled_content": {
+        "type": "number",
+        "unit": "percentage",
+        "required": true
+      },
+      "recyclability": {
+        "type": "boolean",
+        "required": true
+      },
+      "reusability": {
+        "type": "boolean",
+        "required": true
+      }
+    },
+    "environmental_impact": {
+      "safety": {
+        "type": "string",
+        "description": "Statement on product innocuousness",
+        "required": true
+      }
+    },
+    "additional_information": {
+      "weight": {
+        "type": "number",
+        "unit": "kg",
+        "required": false
+      },
+      "quantity": {
+        "type": "number",
+        "required": false
+      },
+      "material_composition_breakdown": {
+        "type": "array",
+        "items": {
+          "material": "string",
+          "percentage": "number"
+        },
+        "required": false
+      },
+      "transport": {
+        "means": {
+          "type": "string",
+          "required": false
+        },
+        "distance": {
+          "type": "number",
+          "unit": "km",
+          "required": false
+        }
+      }
+    }
+  }
+}
